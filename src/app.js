@@ -1,29 +1,55 @@
 const express = require('express');
-const produtos = require('./produtos');
+const { produtos } = require('./produtos');
+const { livros } = require('./livros');
 
 const app = express();
-app.use(express.json()); // Configura o Express para entender dados em formato JSON
+app.use(express.json());
 
-// Rota GET para listar todos os produtos
-app.get('/produtos', (req, res) => {
-  // Retorna status 200 (OK) e a lista de produtos
-  res.status(200).json(produtos);
-});
-
-// Rota GET para buscar um único produto pelo ID
+// --- ROTAS DE PRODUTOS ---
+// GET /produtos/:id - Busca um produto pelo ID com validações
 app.get('/produtos/:id', (req, res) => {
-  const { id } = req.params;
-  // Procura o produto no array pelo ID
-  const produto = produtos.find(p => p.id === parseInt(id));
-  
-  // Se não encontrar, retorna erro 404
-  if (!produto) {
-    return res.status(404).json({ mensagem: 'Produto não encontrado' });
+  const id = parseInt(req.params.id);
+
+  // Validação: ID deve ser um número não negativo
+  if (isNaN(id) || id < 0) {
+    return res.status(400).json({ erro: "ID inválido" });
   }
-  
-  // Se encontrar, retorna o produto
+
+  const produto = produtos.find(p => p.id === id);
+  if (!produto) {
+    return res.status(404).json({ erro: "Produto não encontrado" });
+  }
+
   res.status(200).json(produto);
 });
 
-// Exporta o app para que o Supertest possa testá-lo sem iniciar o servidor manualmente
+// --- ROTAS DE LIVROS ---
+// GET /livros/:id - Busca um livro pelo seu ID
+app.get('/livros/:id', (req, res) => {
+  const livro = livros.find(l => l.id === parseInt(req.params.id));
+  if (!livro) {
+    return res.status(404).json({ erro: "Livro não encontrado" });
+  }
+  res.status(200).json(livro);
+});
+
+// POST /livros - Cadastra um novo livro
+app.post('/livros', (req, res) => {
+  const { nome, autor, genero } = req.body;
+
+  // Validação: Todos os campos são obrigatórios
+  if (!nome || !autor || !genero) {
+    return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
+  }
+
+  const novoLivro = { 
+    id: livros.length + 1, 
+    nome, 
+    autor, 
+    genero 
+  };
+  livros.push(novoLivro);
+  res.status(201).json(novoLivro);
+});
+
 module.exports = app;

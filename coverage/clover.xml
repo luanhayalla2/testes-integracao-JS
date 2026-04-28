@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1777400772558" clover="3.2.0">
-  <project timestamp="1777400772558" name="All files">
+<coverage generated="1777405111982" clover="3.2.0">
+  <project timestamp="1777405111982" name="All files">
     <metrics statements="15" coveredstatements="15" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3" elements="20" coveredelements="20" complexity="0" loc="15" ncloc="15" packages="1" files="2" classes="2"/>
     <file name="app.js" path="C:\Users\aluno.SENACLAB\Desktop\tutorial-testes-unitarios\testes-integracao\testes-integracao-JS\src\app.js">
       <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
